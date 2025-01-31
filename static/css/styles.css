@@ -1,0 +1,138 @@
+
+/* General Body Styling */
+body {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #222; /* Darker background */
+    color: #e0e0e0; /* Lighter text */
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Header */
+h1 {
+    font-size: 3em;
+    color: #f39c12; /* Gold accent */
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+    text-shadow: 3px 3px 0 #000, 6px 6px 0 #f39c12;
+}
+
+/* Forms */
+form {
+    background-color: #333; /* Darker form background */
+    padding: 20px;
+    margin: 0 auto;
+    width: 300px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px #f39c12; /* Gold shadow */
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-bottom: 3px solid #f39c12; /* Gold accent */
+    background-color: #222;
+    color: #e0e0e0;
+    font-size: 1em;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-bottom: 3px solid #e67e22; /* Orange accent */
+    outline: none;
+}
+
+/* Buttons */
+button[type="submit"] {
+    background-color: #f39c12; /* Gold button */
+    color: #222; /* Dark text */
+    padding: 10px 20px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #e67e22; /* Darker orange */
+}
+
+/* Links */
+a {
+    color: #f39c12; /* Gold links */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #e67e22; /* Darker orange */
+    text-shadow: 0px 0px 5px #f39c12;
+}
+
+/* Flash Messages */
+ul li {
+    list-style-type: none;
+    padding: 10px;
+    background-color: #444; /* Dark background for messages */
+    color: #f39c12; /* Gold text */
+    border-radius: 5px;
+    margin: 10px auto;
+    width: 60%;
+    box-shadow: 0px 0px 10px #e67e22; /* Orange shadow */
+    animation: flashAnimation 1s ease-in-out;
+}
+
+@keyframes flashAnimation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Footer */
+footer {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #f39c12; /* Gold footer text */
+}
+
+/* Navigation Styling */
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* Use flexbox to align items in a row */
+    justify-content: center; /* Center the items horizontally */
+    flex-wrap: wrap; /* Allow wrapping to a new line if needed */
+    gap: 10px; /* Add space between items */
+}
+
+nav ul li {
+    margin: 0; /* Reset margin for list items */
+    padding: 0; /* Reset padding for list items */
+}
+
+nav ul li a {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #f39c12; /* Gold background */
+    color: #222; /* Dark text color */
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-size: 0.9em; /* Slightly smaller font size */
+    text-transform: uppercase; /* Make text uppercase for consistency */
+    text-align: center; /* Center text inside the button */
+    min-width: 120px; /* Set a minimum width to align buttons */
+}
+
+nav ul li a:hover {
+    background-color: #e67e22; /* Darker orange on hover */
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+}
