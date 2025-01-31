@@ -41,4 +41,4 @@ Preporuča se napraviti vlastiti account s vlastitim mailom, ali ukoliko vam se 
 - password: 4uGnsUh9!!!
 - email: alabinjan6@gmail.com
 
-YouTube: https://youtu.be/hQDcAjGRHMQ
+YouTube demo: https://youtu.be/hQDcAjGRHMQ
