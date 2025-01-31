@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>Set Subject</h1>
+<form method="post" action="{{ url_for('set_subject') }}" style="max-width: 500px; margin: auto;">
+    <div style="margin-bottom: 20px;">
+        <label for="subject">Subject Name:</label>
+        <input type="text" id="subject" name="subject" required style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+    </div>
+
+    <div style="margin-bottom: 20px;">
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+        <label for="start_time">Start Time:</label>
+        <input type="time" id="start_time" name="start_time" required style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+        <label for="end_time">End Time:</label>
+        <input type="time" id="end_time" name="end_time" required style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+    </div>
+    
+    <button type="submit" style="padding: 10px 20px; font-size: 16px; color: #fff; background-color: #ffb700; border: none; border-radius: 4px; cursor: pointer; width: 100%;">Set Subject</button>
+</form>
+
+<script>
+    // Set the date input to today's date by default
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').value = today;
+    });
+</script>
+
+<!-- Mobile Styling -->
+<style>
+    @media (max-width: 600px) {
+        form {
+            max-width: 90%;
+            margin: auto;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        label {
+            font-size: 1rem;
+        }
+
+        input, button {
+            font-size: 1rem;
+            padding: 10px;
+        }
+
+        button {
+            width: 100%;
+            font-size: 1.1rem;
+        }
+    }
+</style>
+{% endblock %}

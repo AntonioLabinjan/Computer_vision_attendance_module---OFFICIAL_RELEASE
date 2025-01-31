@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        /* Style for the dropdown container */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Dropdown button styling */
+        .dropdown button {
+            background-color: #343a40;
+            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown button:hover {
+            background-color: #495057;
+        }
+
+        /* Dropdown menu */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #343a40;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #495057;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #222;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h2 {
+            color: #0056b3;
+        }
+
+        h3 {
+            margin-top: 40px;
+        }
+
+        /* Privacy Policy Hover Effect */
+        .privacy-container {
+            position: relative;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .privacy-container button {
+            padding: 8px 16px;
+            background-color: #343a40;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .privacy-container button:hover {
+            background-color: #495057;
+        }
+
+        /* Hidden privacy text */
+        .privacy-text {
+            display: none;
+            position: absolute;
+            top: 150%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #343a40;
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            width: 250px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            text-align: left;
+        }
+
+        /* Show privacy text on hover */
+        .privacy-container:hover .privacy-text {
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .dropdown button {
+                font-size: 14px;
+                padding: 10px 15px;
+            }
+
+            .dropdown-content {
+                min-width: 150px;
+                font-size: 14px;
+            }
+
+            body {
+                font-size: 14px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            h3 {
+                font-size: 18px;
+            }
+
+            .privacy-container button {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            .privacy-text {
+                width: 200px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>Welcome {{ current_user.username }}!</h2>
+
+    <div class="dropdown">
+        <button>Menu</button>
+        <div class="dropdown-content">
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('video_feed') }}">Start Attendance</a>
+            <a href="{{ url_for('attendance') }}">View Attendance</a>
+            <a href="{{ url_for('set_subject') }}">Set Subject</a>
+            <a href="{{ url_for('add_student') }}">Add Student</a>
+            <a href="{{ url_for('add_student_live')}}">Add Student Live</a>
+            <a href="{{ url_for('announcements') }}">View Announcements</a>
+            <a href="{{ url_for('download_attendance') }}">Download Attendance CSV</a>
+            <a href="{{ url_for('plots') }}">Visualization</a>
+            <a href="{{ url_for('report') }}">Report</a>
+            <a href="{{ url_for('late_entries') }}">Late Analysis</a>
+            <a href="{{ url_for('show_calendar') }}">Show Calendar</a>
+            <a href="{{ url_for('logout') }}">Log Out</a>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <h3>Weather Forecast</h3>
+        <p>Current weather: <strong>{{ weather_condition }}</strong></p>
+        <p>Message: <strong>{{ message }}</strong></p>
+    </div>
+
+    <form action="{{ url_for('github_profile') }}" method="get">
+        <button type="submit">About Author</button>
+    </form>
+
+    <!-- Privacy Policy Button with Hover Effect -->
+    <div class="privacy-container">
+        <button>Privacy Policy</button>
+        <div class="privacy-text">
+            <p>Your facial recognition data is used solely for attendance purposes and is not shared with any third parties. No external entities have, or will ever have, access to this data.</p>
+        </div>
+    </div>
+
+</body>
+</html>

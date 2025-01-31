@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #070000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            color: #f8f5f5;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 300px;
+        }
+        label {
+            font-weight: bold;
+            margin: 10px 0 5px;
+            color: #f7f3f3;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        button:active {
+            background-color: #004494;
+            transform: translateY(0);
+        }
+
+        /* Flash message styling */
+        ul {
+            list-style-type: none;
+            padding: 0;
+            width: 100%;
+            max-width: 300px;
+            margin-top: 15px;
+        }
+        .flash {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .flash.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .flash.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        /* Mobile Styling */
+        @media (max-width: 600px) {
+            h2 {
+                font-size: 1.2rem;
+                margin-bottom: 15px;
+            }
+            button {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>Signup</h2>
+    <form method="POST">
+        <label for="username">Username:</label>
+        <input type="text" name="username" required>
+        
+        <label for="email">Email:</label>
+        <input type="email" name="email" required>
+        
+        <label for="password">Password:</label>
+        <input type="password" name="password" required>
+        
+        <label for="repeat_password">Repeat Password:</label>
+        <input type="password" name="repeat_password" required>
+        
+        <button type="submit">Sign Up</button>
+    </form>
+
+    <!-- Flash message section -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="flash {{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcements</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown button {
+            background-color: #343a40;
+            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown button:hover {
+            background-color: #495057;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #343a40;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #495057;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        hr {
+            margin-top: 10px;
+            border-color: #343a40;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #050505;
+            color: #b9661e;
+            margin: 40px;
+        }
+
+        #warning-alert {
+            padding: 15px;
+            background-color: #ff9800; 
+            color: white;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            position: relative;
+            display: none;
+        }
+
+        #warning-alert .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .dropdown button {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            form {
+                margin-top: 20px;
+            }
+
+            textarea {
+                width: 100%;
+                font-size: 14px;
+            }
+
+            input[type="submit"] {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            ul {
+                padding-left: 0;
+                list-style-type: none;
+            }
+
+            li {
+                font-size: 0.9rem;
+                margin-bottom: 10px;
+            }
+
+            strong {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="dropdown">
+                <button>Menu</button>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('index') }}">Home</a>
+                    <a href="{{ url_for('set_subject') }}">Set Subject</a>
+                    <a href="{{ url_for('video_feed') }}">Start Attendance</a>
+                    <a href="{{ url_for('add_student') }}">Add Student</a>
+                    <a href="{{ url_for('attendance') }}">View Attendance</a>
+                    <a href="{{ url_for('statistics') }}">Statistics</a>
+                    <a href="{{ url_for('students') }}">Students</a>
+                    <a href="{{ url_for('announcements') }}">View Announcements</a>
+                    <a href="{{ url_for('plots') }}">Visualization</a>
+                    <a href="{{ url_for('report') }}">Report</a>
+                    <a href="{{ url_for('late_entries') }}">Late Analysis</a>
+                    <a href="{{ url_for('show_calendar') }}">Show Calendar</a>
+                </div>
+            </div>
+            <hr>
+        </nav>
+    </header>
+
+    {% if request.args.get('warning') %}
+    <div id="warning-alert">
+        {{ request.args.get('warning') }}
+        <span class="close-btn" onclick="closeAlert()">×</span>
+    </div>
+    {% endif %}
+
+    <h1>Announcements</h1>
+    <form action="{{ url_for('post_announcement') }}" method="post">
+        <textarea name="message" rows="4" cols="50" placeholder="Write your announcement here..."></textarea><br>
+        <input type="submit" value="Post Announcement">
+    </form>
+
+    <h2>All Announcements</h2>
+    <ul>
+        {% for announcement in announcements %}
+            <li>
+                <strong>{{ announcement[1] }} - {{ announcement[2] }}:</strong> {{ announcement[3] }}
+                {% if current_user.username == announcement[2] %}
+                    <a href="{{ url_for('edit_announcement', id=announcement[0]) }}">Edit</a>
+                    <form action="{{ url_for('delete_announcement', id=announcement[0]) }}" method="post" style="display:inline;">
+                        <input type="submit" value="Delete">
+                    </form>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('index') }}">Back to Home</a>
+
+    <script>
+        function closeAlert() {
+            document.getElementById("warning-alert").style.display = "none";
+        }
+
+        window.onload = function() {
+            if ({{ 'true' if request.args.get('warning') else 'false' }}) {
+                document.getElementById("warning-alert").style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>

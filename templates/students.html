@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>Student List</h1>
+<ul>
+    {% for (name,) in students %}
+    <li>{{ name }}</li>
+    {% endfor %}
+</ul>
+<a href="{{ url_for('index') }}">Back to Home</a>
+{% endblock %}

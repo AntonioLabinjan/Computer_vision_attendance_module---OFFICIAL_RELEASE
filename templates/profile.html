@@ -1,0 +1,39 @@
+<!-- templates/profile.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .profile {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .profile h1 {
+            color: #333;
+        }
+        .profile p {
+            font-size: 1.2em;
+            color: #555;
+        }
+        .profile .followers {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="profile">
+        <h1>{{ name }}</h1>
+        <p><strong>Bio:</strong> {{ bio }}</p>
+        <p><strong>Followers:</strong> {{ followers }}</p>
+    </div>
+</body>
+</html>

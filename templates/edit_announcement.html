@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Announcement</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>Edit Announcement</h1>
+    <form action="{{ url_for('edit_announcement', id=announcement[0]) }}" method="post">
+        <textarea name="message" rows="4" cols="50">{{ announcement[3] }}</textarea><br>
+        <input type="submit" value="Update Announcement">
+    </form>
+    <a href="{{ url_for('announcements') }}">Back to Announcements</a>
+</body>
+</html>

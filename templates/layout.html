@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        /* Style for the dropdown container */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Dropdown button styling */
+        .dropdown button {
+            background-color: #343a40;
+            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown button:hover {
+            background-color: #495057;
+        }
+
+        /* Dropdown menu */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0; /* Align the dropdown menu to the right */
+            background-color: #343a40;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            z-index: 1;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Hover effect on dropdown links */
+        .dropdown-content a:hover {
+            background-color: #495057;
+        }
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Remove default list styling for navbar */
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        hr {
+            margin-top: 10px;
+            border-color: #343a40;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #050505;
+            color: #b9661e;
+            margin: 40px;
+        }
+
+        nav {
+            text-align: right; /* Align the navbar and dropdown to the right */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="dropdown">
+                <button>Menu</button>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('index') }}">Home</a>
+                    <a href="{{ url_for('set_subject') }}">Set Subject</a>
+                    <a href="{{ url_for('video_feed') }}">Start Attendance</a>
+                    <a href="{{ url_for('add_student') }}">Add Student Manually</a>
+                    <a href="{{ url_for('add_student_live')}}">Add Student Live</a>
+                    <a href="{{ url_for('attendance') }}">View Attendance</a>
+                    <a href="{{ url_for('statistics') }}">Statistics</a>
+                    <a href="{{ url_for('students') }}">Students</a>
+                    <a href="{{ url_for('announcements') }}">View Announcements</a>
+                    <a href="{{ url_for('plots') }}">Visualization</a>
+                    <a href="{{ url_for('report') }}">Report</a>
+                    <a href="{{ url_for('late_entries') }}">Late Analysis</a>
+                    <a href="{{ url_for('show_calendar') }}">Show Calendar</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </main>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

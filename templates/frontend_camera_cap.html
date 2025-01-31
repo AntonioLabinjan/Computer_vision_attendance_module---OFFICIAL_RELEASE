@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camera Capture</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    video {
+      width: 640px;
+      height: 480px;
+      border: 1px solid #ccc;
+    }
+    canvas {
+      display: none;
+    }
+    #status {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Frontend Camera Capture</h1>
+
+  <!-- Video element to display the camera feed -->
+  <video id="video" autoplay></video>
+  
+  <!-- Hidden canvas element to capture video frames -->
+  <canvas id="canvas" width="640" height="480"></canvas>
+  
+  <div id="status">Initializing camera...</div>
+
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const status = document.getElementById('status');
+
+    // Access the user's webcam
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => {
+        video.srcObject = stream;
+        status.textContent = "Camera is ready! Capturing frames...";
+      })
+      .catch(error => {
+        console.error("Error accessing the camera:", error);
+        status.textContent = "Error accessing the camera.";
+      });
+
+    // Function to capture frames and send to the backend
+    function captureAndSend() {
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const frame = canvas.toDataURL('image/jpeg');  // Convert the frame to base64 JPEG
+
+      // Send the captured frame to the backend (Flask)
+      fetch('/video_feed', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ image: frame })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Frame processed:', data);
+      })
+      .catch(error => {
+        console.error('Error sending frame:', error);
+      });
+    }
+
+    // Capture and send frames every 100ms
+    setInterval(captureAndSend, 100);  // Adjust the interval as needed
+  </script>
+</body>
+</html>

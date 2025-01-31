@@ -1,0 +1,160 @@
+{% extends 'layout.html' %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Late Attendance Entries Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        /* Basic styling for desktop */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #c98b0e;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        /* Mobile styling */
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.25rem;
+                margin-bottom: 15px;
+            }
+
+            p {
+                font-size: 0.95rem;
+                margin-bottom: 8px;
+            }
+
+            table {
+                font-size: 0.9rem;
+            }
+
+            /* Make table scrollable on small screens */
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            tr {
+                border: 1px solid #ccc;
+                margin-bottom: 5px;
+            }
+
+            td {
+                border: none;
+                border-bottom: 1px solid #ddd;
+                padding: 8px;
+                position: relative;
+                padding-left: 50%;
+            }
+
+            td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 10px;
+                font-weight: bold;
+                color: #333;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Late Attendance Entries Analysis</h1>
+        
+        {% if late_entries %}
+            <h2>Analysis:</h2>
+            {% if most_common_hour %}
+                <p>The most common hour for late entries is: {{ most_common_hour[0] }}:00 with {{ most_common_hour[1] }} late entries.</p>
+            {% else %}
+                <p>No data available for hour analysis.</p>
+            {% endif %}
+
+            {% if most_common_weekday %}
+                <p>The most common weekday for late entries is: 
+                   {% if most_common_weekday[0] == 0 %} Monday 
+                   {% elif most_common_weekday[0] == 1 %} Tuesday 
+                   {% elif most_common_weekday[0] == 2 %} Wednesday 
+                   {% elif most_common_weekday[0] == 3 %} Thursday 
+                   {% elif most_common_weekday[0] == 4 %} Friday 
+                   {% elif most_common_weekday[0] == 5 %} Saturday 
+                   {% elif most_common_weekday[0] == 6 %} Sunday 
+                   {% endif %}
+                   with {{ most_common_weekday[1] }} late entries.
+                </p>
+            {% else %}
+                <p>No data available for weekday analysis.</p>
+            {% endif %}
+
+            {% if plot_url %}
+                <h2>Late Entries by Hour</h2>
+                <img src="data:image/png;base64,{{ plot_url }}" alt="Late Entries by Hour" style="width: 100%; height: auto;">
+            {% endif %}
+
+            <h2>Late Entries:</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Time In</th>
+                        <th>Subject</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in late_entries %}
+                        <tr>
+                            <td data-label="Name">{{ entry[0] }}</td> <!-- Name -->
+                            <td data-label="Date">{{ entry[1] }}</td> <!-- Date -->
+                            <td data-label="Time In">{{ entry[2] }}</td> <!-- Time -->
+                            <td data-label="Subject">{{ entry[3] }}</td> <!-- Subject -->
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No late entries found.</p>
+        {% endif %}
+    </div>
+</body>
+{% endblock %}

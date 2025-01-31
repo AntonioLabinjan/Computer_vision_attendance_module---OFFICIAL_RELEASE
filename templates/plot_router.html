@@ -1,0 +1,113 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualization Plots</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 300px;
+        }
+        .route-button {
+            display: inline-block;
+            padding: 15px;
+            font-size: 18px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .route-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        .route-button:active {
+            background-color: #004494;
+            transform: translateY(0);
+        }
+        .flash-messages {
+            margin: 10px 0;
+            width: 100%;
+            max-width: 300px;
+        }
+        .flash {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .flash.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .flash.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        /* Mobile Styling */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.2rem;
+                margin-bottom: 20px;
+            }
+            .route-button {
+                font-size: 16px;
+                padding: 12px;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<h1>Visualization Plots</h1>
+
+<!-- Flash message display for attendance-related messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <ul class="flash-messages">
+            {% set displayed = false %}
+            {% for category, message in messages %}
+                {% if category == 'attendance_warning' and not displayed %}
+                    <li class="flash {{ category }}">{{ message }}</li>
+                    {% set displayed = true %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
+<div class="button-container">
+    <a href="/plot/student_attendance" class="route-button">Attendance per Student</a>
+    <hr>
+    <a href="/plot/subject_attendance" class="route-button">Attendance per Subject</a>
+    <hr>
+    <a href="/plot/monthly_attendance" class="route-button">Attendance per Month</a>
+</div>
+{% endblock %}

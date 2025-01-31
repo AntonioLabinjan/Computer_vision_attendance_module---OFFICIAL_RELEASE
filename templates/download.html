@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Attendance</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #050505;
+            color: #b9661e;
+            margin: 20px;
+            padding: 0;
+            text-align: center; /* Center text for better mobile view */
+        }
+
+        h1 {
+            font-size: 24px; /* General heading size */
+        }
+
+        p {
+            font-size: 18px; /* General paragraph size */
+        }
+
+        a, button {
+            background-color: #343a40; /* Button-like appearance */
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none; /* Remove underline for link */
+            font-size: 16px; /* General button font size */
+        }
+
+        a:hover, button:hover {
+            background-color: #495057; /* Hover effect for link and button */
+        }
+
+        /* Mobile styles */
+        @media (max-width: 600px) {
+            body {
+                margin: 10px; /* Reduced margin for mobile */
+            }
+
+            h1 {
+                font-size: 20px; /* Smaller heading size on mobile */
+            }
+
+            p {
+                font-size: 16px; /* Smaller paragraph size on mobile */
+            }
+
+            a, button {
+                padding: 8px 12px; /* Smaller padding for mobile */
+                font-size: 14px; /* Smaller font size for buttons on mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Your attendance data is ready</h1>
+    <!-- Button to open Gmail -->
+    <p><a href="{{ url_for('download_attendance') }}">Download Attendance CSV</a></p>
+    <button onclick="openGmail()">Open Gmail</button>
+
+    <script>
+        function openGmail() {
+            let userEmail = "{{ user_email }}";
+            let gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(userEmail)}`;
+            window.open(gmailUrl, '_blank');
+        }
+    </script>
+</body>
+</html>

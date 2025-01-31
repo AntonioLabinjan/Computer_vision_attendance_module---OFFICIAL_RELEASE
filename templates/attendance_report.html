@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        .met { color: green; font-weight: bold; }
+        .not-met { color: red; font-weight: bold; }
+
+        /* Mobile styling */
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .average-attendance {
+                font-size: 1rem;
+            }
+
+            ul {
+                padding-left: 0;
+                list-style-type: none; /* Remove default list styling */
+            }
+
+            li {
+                font-size: 0.9rem;
+                margin-bottom: 8px; /* Add some space between items */
+            }
+
+            strong {
+                font-size: 1rem; /* Increase bold text size for better visibility */
+            }
+
+            .met, .not-met {
+                font-size: 0.9rem; /* Adjust size of status indicators */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Loop through each subject in the report -->
+        {% for subject in report %}
+            <h1>{{ subject.subject }} - Total Lectures: {{ subject.total_lectures }}</h1>
+            <p class="average-attendance">Average Attendance: {{ subject.average_attendance|round(2) }}%</p>
+
+            <!-- Table for attendance details -->
+            <ul>
+                <li><strong>Student</strong> - <strong>Attended</strong> - <strong>Attendance %</strong> - <strong>Status</strong></li>
+                {% for student in subject.students %}
+                    <li>
+                        {{ student.name }} - Attended: {{ student.attended_lectures }} 
+                        - Attendance: {{ student.attendance_percentage|round(2) }}% 
+                        - {% if student.meets_requirement %}
+                            <span class="met">&#10004; Met</span>
+                        {% else %}
+                            <span class="not-met">&#10008; Not Met</span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+            <hr>
+        {% endfor %}
+    </div>
+</body>
+{% endblock %}

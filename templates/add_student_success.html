@@ -1,0 +1,7 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>Student Added Successfully</h1>
+<p>{{ name }} has been added to the attendance system.</p>
+<a href="{{ url_for('add_student') }}">Add Another Student</a> |
+<a href="{{ url_for('index') }}">Go back to Home</a>
+{% endblock %}

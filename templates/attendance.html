@@ -1,0 +1,193 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h1>Attendance Records</h1>
+
+<!-- Attendance Records -->
+{% for date, subjects in grouped_records.items() %}
+    <h2>Date: {{ date }}</h2>
+    {% for subject, records in subjects.items() %}
+        <h3>Subject: {{ subject }} <span class="student-count" id="count-{{ subject }}">(0 students)</span></h3>
+        <ul id="subject-{{ subject }}">
+            {% for rowid, name, time, late in records %}
+                <li>
+                    {{ name }} - {{ time }} 
+                    {% if late %}
+                        <span style="color: red;">(Late)</span>
+                    {% endif %}
+                    <form action="{{ url_for('delete_attendance', id=rowid) }}" method="post" style="display:inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+{% endfor %}
+
+<a href="{{ url_for('download_attendance') }}">Download Attendance CSV</a>
+
+<!-- Filter Form -->
+<form method="GET" action="{{ url_for('attendance') }}" class="filter-form">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" value="{{ request.args.get('name', '') }}">
+
+    <label for="subject">Subject:</label>
+    <input type="text" id="subject" name="subject" value="{{ request.args.get('subject', '') }}">
+
+    <label for="date">Date:</label>
+    <input type="date" id="date" name="date" value="{{ request.args.get('date', '') }}">
+
+    <label for="weekday">Weekday:</label>
+    <select id="weekday" name="weekday">
+        <option value="">Any</option>
+        <option value="0" {% if request.args.get('weekday') == '0' %}selected{% endif %}>Sunday</option>
+        <option value="1" {% if request.args.get('weekday') == '1' %}selected{% endif %}>Monday</option>
+        <option value="2" {% if request.args.get('weekday') == '2' %}selected{% endif %}>Tuesday</option>
+        <option value="3" {% if request.args.get('weekday') == '3' %}selected{% endif %}>Wednesday</option>
+        <option value="4" {% if request.args.get('weekday') == '4' %}selected{% endif %}>Thursday</option>
+        <option value="5" {% if request.args.get('weekday') == '5' %}selected{% endif %}>Friday</option>
+        <option value="6" {% if request.args.get('weekday') == '6' %}selected{% endif %}>Saturday</option>
+    </select>
+
+    <label for="month">Month:</label>
+    <select id="month" name="month">
+        <option value="">Any</option>
+        {% for i in range(1, 13) %}
+            <option value="{{ i }}" {% if request.args.get('month')|int == i %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="year">Year:</label>
+    <input type="number" id="year" name="year" value="{{ request.args.get('year', '') }}" min="2000" max="2100">
+
+    <label for="late">Late:</label>
+    <select id="late" name="late">
+        <option value="">Any</option>
+        <option value="1" {% if request.args.get('late') == '1' %}selected{% endif %}>Yes</option>
+        <option value="0" {% if request.args.get('late') == '0' %}selected{% endif %}>No</option>
+    </select>
+
+    <button type="submit">Filter</button>
+    <a href="{{ url_for('attendance') }}"><button type="button">Clear Filters</button></a>
+</form>
+
+<style>
+    /* General styles for desktop */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #070000;
+        color: #333;
+        margin: 20px;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    h2, h3 {
+        color: #b9661e;
+    }
+
+    ul {
+        list-style-type: none; /* Remove bullets from list */
+        padding: 0; /* Remove default padding */
+    }
+
+    li {
+        margin: 10px 0; /* Space between list items */
+        padding: 10px;
+        background: #fff; /* White background for items */
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+
+    button {
+        background-color: #343a40;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-left: 10px; /* Space between name and delete button */
+    }
+
+    a {
+        color: #007bff;
+        text-decoration: none; /* Remove underline */
+    }
+
+    /* Filter form styles */
+    .filter-form {
+        margin-top: 20px; /* Space above the filter form */
+        padding: 20px;
+        background: #bb6a06; /* White background for the form */
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+
+    label {
+        display: block; /* Labels take the full width */
+        margin: 5px 0; /* Space around labels */
+    }
+
+    /* Responsive styles for mobile */
+    @media (max-width: 600px) {
+        body {
+            margin: 10px; /* Reduced margin for mobile */
+        }
+
+        h1 {
+            font-size: 24px; /* Smaller heading size */
+        }
+
+        h2, h3 {
+            font-size: 20px; /* Smaller subheading sizes */
+        }
+
+        ul {
+            padding: 0;
+        }
+
+        li {
+            padding: 8px; /* Smaller padding for mobile */
+            font-size: 16px; /* Smaller font size for list items */
+        }
+
+        button {
+            padding: 8px; /* Smaller padding for buttons on mobile */
+            font-size: 14px; /* Smaller font size for buttons on mobile */
+        }
+
+        .filter-form {
+            padding: 15px; /* Less padding for mobile filter form */
+            max-width: 400px; /* Set a maximum width for the filter form */
+            margin: 0 auto; /* Center the form */
+        }
+
+        label {
+            font-size: 14px; /* Smaller font size for labels on mobile */
+        }
+
+        input, select {
+            font-size: 14px; /* Smaller font size for input/select */
+            width: 100%; /* Full width inputs */
+            padding: 8px; /* Padding for inputs */
+            box-sizing: border-box; /* Include padding in width */
+        }
+    }
+</style>
+
+<script>
+    // JavaScript to count students per subject
+    window.onload = function() {
+        const subjectLists = document.querySelectorAll('ul[id^="subject-"]');
+        subjectLists.forEach(list => {
+            const subjectId = list.id.replace('subject-', '');
+            const studentCount = list.querySelectorAll('li').length;
+            const countDisplay = document.getElementById(`count-${subjectId}`);
+            countDisplay.textContent = `(${studentCount} students)`;
+        });
+    };
+</script>
+
+{% endblock %}

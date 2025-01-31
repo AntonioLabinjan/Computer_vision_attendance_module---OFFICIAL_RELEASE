@@ -1,0 +1,131 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>Add a New Student</h1>
+
+<style>
+    /* Styling for the drop zone */
+    #drop-zone {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 20px;
+        background-color: #f9f9f9;
+    }
+
+    #drop-zone.dragover {
+        background-color: #e3e3e3;
+    }
+
+    /* Responsive styles */
+    @media (max-width: 600px) {
+        h1 {
+            font-size: 1.5em; /* Smaller heading on mobile */
+        }
+
+        #drop-zone {
+            padding: 15px; /* Reduce padding on mobile */
+        }
+
+        label {
+            font-size: 0.9em; /* Smaller font for labels on mobile */
+        }
+
+        input[type="text"], button {
+            width: 100%; /* Full width inputs and button on mobile */
+            padding: 10px; /* Increase padding for better touch targets */
+            font-size: 1em; /* Larger text for better readability */
+        }
+
+        ul {
+            padding-left: 20px; /* Add padding for file list */
+        }
+    }
+</style>
+
+<form method="post" action="{{ url_for('add_student') }}" enctype="multipart/form-data">
+    <label for="name">Student Name:</label>
+    <input type="text" id="name" name="name" required>
+    
+    <label for="images">Upload Images:</label>
+    <div id="drop-zone">
+        Drag and drop images here or click to upload
+    </div>
+    <input type="file" id="images" name="images" multiple style="display:none;">
+    
+    <ul id="file-list"></ul>
+
+    <button type="submit">Add Student</button>
+</form>
+
+<script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('images');
+    const fileList = document.getElementById('file-list');
+
+    // Create a DataTransfer object to store the files
+    const dataTransfer = new DataTransfer();
+
+    // Trigger the file input when clicking on the drop zone
+    dropZone.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    // Handle file selection via clicking (classic upload)
+    fileInput.addEventListener('change', (event) => {
+        const files = event.target.files;
+        addFiles(files);
+        // Reset the file input to allow selecting the same file again if needed
+        event.target.value = '';
+    });
+
+    // Handle drag and drop
+    dropZone.addEventListener('dragover', (event) => {
+        event.preventDefault();
+        dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+        dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', (event) => {
+        event.preventDefault();
+        dropZone.classList.remove('dragover');
+        const files = event.dataTransfer.files;
+        addFiles(files);
+    });
+
+    // Function to add files to the DataTransfer object and display them
+    function addFiles(files) {
+        for (let i = 0; i < files.length; i++) {
+            if (!fileExists(files[i])) {
+                dataTransfer.items.add(files[i]);
+                displayFile(files[i]);
+            }
+        }
+        fileInput.files = dataTransfer.files;
+    }
+
+    // Function to check if a file already exists in the DataTransfer object
+    function fileExists(file) {
+        for (let i = 0; i < dataTransfer.items.length; i++) {
+            const existingFile = dataTransfer.items[i].getAsFile();
+            if (
+                existingFile.name === file.name &&
+                existingFile.size === file.size &&
+                existingFile.lastModified === file.lastModified
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Function to display the file name in the file list
+    function displayFile(file) {
+        const li = document.createElement('li');
+        li.textContent = file.name;
+        fileList.appendChild(li);
+    }
+</script>
+{% endblock %}
