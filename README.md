@@ -42,3 +42,4 @@ Preporuča se napraviti vlastiti account s vlastitim mailom, ali ukoliko vam se 
 - email: alabinjan6@gmail.com
 
 YouTube demo: https://youtu.be/hQDcAjGRHMQ
+Original&chaotic Github repo: https://github.com/AntonioLabinjan/CV-attendance
